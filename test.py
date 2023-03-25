@@ -49,7 +49,7 @@ def test_kmean(X, nb_cluster):
     elapsed = end - start
     print(f'Temps d\'exécution kmean : {elapsed:.2}ms')
     display_kmeans(kmeans, X)
-    return 0
+    return kmeans
     
 def aglo(X, nb_cluster):
     start = time.time()
@@ -61,7 +61,8 @@ def aglo(X, nb_cluster):
     end = time.time()
     elapsed = end - start
     print(f'Temps d\'exécution aglo : {elapsed:.2}ms')   
-    display_agglomerative_clustering(model, X)
+    #display_agglomerative_clustering(model, X)
+    return model
     
 def MeanShift_test(X):
     start = time.time()
@@ -76,7 +77,8 @@ def MeanShift_test(X):
     elapsed = end - start
     print(f'Temps d\'exécution MeanShift : {elapsed:.2}ms')
     print(f'Temps d\'exécution MeanShift : {elapsed:.2f}s')
-    display_kmeans(ms, X)
+    #display_kmeans(ms, X)
+    return ms
 	
 	
 def DBSCAN_test(X):
@@ -89,7 +91,8 @@ def DBSCAN_test(X):
     elapsed = end - start
     print(f'Temps d\'exécution DBSCAN : {elapsed:.2}ms')
     
-    display_agglomerative_clustering(dbscan, X)
+    #display_agglomerative_clustering(dbscan, X)
+    return dbscan
     
 def main(title):
     data = pd.read_csv(title)
