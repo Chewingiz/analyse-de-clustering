@@ -56,7 +56,7 @@ def test_kmean(X, nb_cluster):
     #display_kmeans(kmeans, X)
     return kmeans
     
-def aglo(X, nb_cluster):
+def agglo(X, nb_cluster):
     start = time.time()
 	# Instanciation de la classe AgglomerativeClustering
     model = AgglomerativeClustering(n_clusters=nb_cluster)
@@ -102,34 +102,34 @@ def DBSCAN_test(X):
 def main(title):
     data = pd.read_csv(title)
     X = data[['x', 'y']].values
-    kmeans_model_1 = test_kmean(X, 3)
-    agglomerative_model_1 = aglo(X, 3)
-    kmeans_model_2 = MeanShift_test(X)
-    agglomerative_model_2 = DBSCAN_test(X)
+    kmeans = test_kmean(X, 3)
+    agglomerative = agglo(X, 3)
+    MeanShift = MeanShift_test(X)
+    DBSCAN = DBSCAN_test(X)
 
    
 
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
-
+    fig.canvas.manager.set_window_title("Comparaisons des méthodes de clusterisation")
     # Afficher le premier tableau de clustering k-means
     ax = axes[0, 0]
     ax.set_title("K-Means (k=3)")
-    display_kmeans(kmeans_model_1, X, ax)
+    display_kmeans(kmeans, X, ax)
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
-    ax.set_title("K-Means (k=4)")
-    display_kmeans(kmeans_model_2, X, ax)
+    ax.set_title("MeanShift")
+    display_kmeans(MeanShift, X, ax)
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
-    ax.set_title("Agglomerative Clustering (n_clusters=2)")
-    display_agglomerative(agglomerative_model_1, X, ax)
+    ax.set_title("Agglomerative Clustering")
+    display_agglomerative(agglomerative, X, ax)
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
-    ax.set_title("Agglomerative Clustering (n_clusters=3)")
-    display_agglomerative(agglomerative_model_2, X, ax)
+    ax.set_title("DBSCAN")
+    display_agglomerative(DBSCAN, X, ax)
 
     plt.tight_layout()
 
