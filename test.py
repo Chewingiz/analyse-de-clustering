@@ -4,6 +4,7 @@ import sys
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import silhouette_score
 
     
 def display_kmeans(kmeans_model, X, ax):
@@ -69,13 +70,14 @@ def agglo(X, nb_cluster):
     #display_agglomerative_clustering(model, X)
     return model
     
-def MeanShift_test(X):
+def MeanShift_test(X, bw):
     start = time.time()
 	# Créer une instance de la classe MeanShift
     #ms = MeanShift(bandwidth=25) # donne 6 groupes
     #ms = MeanShift(bandwidth=30) # donne 4 groupes
-    ms = MeanShift(bandwidth=35) # donne 3 groupes
+    #ms = MeanShift(bandwidth=35) # donne 3 groupes très bon
     #ms = MeanShift(bandwidth=40) # donne 3 groupes
+    ms = MeanShift(bandwidth=bw)
 	# Entraînement du modèle sur les données
     ms.fit(X)
     end = time.time()
@@ -86,11 +88,12 @@ def MeanShift_test(X):
     return ms
 	
 	
-def DBSCAN_test(X):
+def DBSCAN_test(X, eps, ms):
     start = time.time()
 	# Création d'un objet DBSCAN
-    dbscan = DBSCAN(eps=20, min_samples=2) # marche bien
+    #dbscan = DBSCAN(eps=20, min_samples=2) # marche bien
 	#dbscan = DBSCAN(eps=25, min_samples=2) # 2 clsuters coller
+    dbscan = DBSCAN(eps=eps, min_samples=ms)
     dbscan.fit(X)
     end = time.time()
     elapsed = end - start
@@ -99,13 +102,68 @@ def DBSCAN_test(X):
     #display_agglomerative_clustering(dbscan, X)
     return dbscan
     
+def nb_cluster_optimal(X):
+    silhouette_scores = []
+    for n_clusters in range(2, 11):
+        kmeans = KMeans(n_clusters=n_clusters, random_state=0, n_init="auto")
+        labels = kmeans.fit_predict(X)
+        silhouette = silhouette_score(X, labels)
+        silhouette_scores.append(silhouette)
+    # Recherche du nombre optimal de clusters
+    optimal_n_clusters = np.argmax(silhouette_scores) + 2
+    print(f"Le nombre optimal de clusters est {optimal_n_clusters}")
+
+    plt.plot(range(2, 11), silhouette_scores)
+    plt.xlabel("Nombre de clusters")
+    plt.ylabel("Coefficient de silhouette")
+    plt.title("Courbe de silhouette pour KMeans clustering")
+    plt.show()
+
+    return optimal_n_clusters
+
 def main(title):
     data = pd.read_csv(title)
     X = data[['x', 'y']].values
-    kmeans = test_kmean(X, 3)
-    agglomerative = agglo(X, 3)
-    MeanShift = MeanShift_test(X)
-    DBSCAN = DBSCAN_test(X)
+    nb_cluster = nb_cluster_optimal(X)
+
+    DBSCAN_1 = DBSCAN_test(X, 20, 2)#10,15 créé erreur affichage
+    DBSCAN_2 = DBSCAN_test(X, 25, 2)
+    DBSCAN_3 = DBSCAN_test(X, 30, 2)
+    DBSCAN_4 = DBSCAN_test(X, 20, 3)
+
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
+    fig.canvas.manager.set_window_title("Comparaisons des résultats de DBSCAN en fonction de la valeur de l'eps")
+    # Afficher le premier tableau de clustering k-means
+    ax = axes[0, 0]
+    ax.set_title("DBSCAN (eps = 20 et min_samples = 2)")
+    display_agglomerative(DBSCAN_1, X, ax)
+
+    # Afficher le deuxième tableau de clustering k-means
+    ax = axes[0, 1]
+    ax.set_title("DBSCAN (eps = 25 et min_samples = 2)")
+    display_agglomerative(DBSCAN_2, X, ax)
+
+    # Afficher le troisième tableau de clustering agglomératif
+    ax = axes[1, 0]
+    ax.set_title("DBSCAN (eps = 30 et min_samples = 2)")
+    display_agglomerative(DBSCAN_3, X, ax)
+
+    # Afficher le quatrième tableau de clustering agglomératif
+    ax = axes[1, 1]
+    ax.set_title("DBSCAN (eps = 20 et min_samples = 3)")
+    display_agglomerative(DBSCAN_4, X, ax)
+
+    plt.tight_layout()
+
+    # Afficher la figure
+    plt.show()
+    
+
+
+    kmeans = test_kmean(X, nb_cluster)
+    agglomerative = agglo(X, nb_cluster)
+    MeanShift = MeanShift_test(X, 35)
+    DBSCAN = DBSCAN_test(X, 20, 2)
 
    
 
@@ -113,31 +171,68 @@ def main(title):
     fig.canvas.manager.set_window_title("Comparaisons des méthodes de clusterisation")
     # Afficher le premier tableau de clustering k-means
     ax = axes[0, 0]
-    ax.set_title("K-Means (k=3)")
+    ax.set_title(f"K-Means (k = {nb_cluster})")
     display_kmeans(kmeans, X, ax)
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
-    ax.set_title("MeanShift")
+    ax.set_title("MeanShift (bandwidth = 35)")
     display_kmeans(MeanShift, X, ax)
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
-    ax.set_title("Agglomerative Clustering")
+    ax.set_title(f"Agglomerative Clustering (k = {nb_cluster})")
     display_agglomerative(agglomerative, X, ax)
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
-    ax.set_title("DBSCAN")
+    ax.set_title("DBSCAN  (eps = 20 et min_samples = 2)")
     display_agglomerative(DBSCAN, X, ax)
 
     plt.tight_layout()
 
     # Afficher la figure
     plt.show()
+   
 
+
+
+    MeanShift_1 = MeanShift_test(X, 25)
+    MeanShift_2 = MeanShift_test(X, 30)
+    MeanShift_3 = MeanShift_test(X, 35)
+    MeanShift_4 = MeanShift_test(X, 40)
+   
+
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
+    fig.canvas.manager.set_window_title("Comparaisons des résultats de MeanShift en fonction de la valeur de bandwidth")
+    # Afficher le premier tableau de clustering k-means
+    ax = axes[0, 0]
+    ax.set_title("MeanShift (bandwidth = 25)")
+    display_kmeans(MeanShift_1, X, ax)
+
+    # Afficher le deuxième tableau de clustering k-means
+    ax = axes[0, 1]
+    ax.set_title("MeanShift (bandwidth = 30)")
+    display_kmeans(MeanShift_2, X, ax)
+
+    # Afficher le troisième tableau de clustering agglomératif
+    ax = axes[1, 0]
+    ax.set_title("MeanShift (bandwidth = 35)")
+    display_kmeans(MeanShift_3, X, ax)
+
+    # Afficher le quatrième tableau de clustering agglomératif
+    ax = axes[1, 1]
+    ax.set_title("MeanShift (bandwidth = 40)")
+    display_kmeans(MeanShift_4, X, ax)
+
+    plt.tight_layout()
+
+    # Afficher la figure
+    plt.show()
 
     return 0
+
+    
 
 
 if __name__ == "__main__":
@@ -147,21 +242,30 @@ if __name__ == "__main__":
         print(f"Warning no file specified.")
         exit(1)
     main(sys.argv[1])
+
 """
 
-    KMeans : cet algorithme divise les données en K clusters en minimisant la somme des distances au carré entre chaque point de données et le centroïde de son cluster. C'est l'un des algorithmes de clustering les plus couramment utilisés.
+    KMeans : cet algorithme divise les données en K clusters en minimisant la somme des distances au carré entre chaque point de données et le centroïde de son cluster. 
+    C'est l'un des algorithmes de clustering les plus couramment utilisés.
 
-    AgglomerativeClustering : cet algorithme commence par attribuer chaque point de données à son propre cluster, puis fusionne de manière récursive les paires de clusters les plus proches jusqu'à ce que tous les points appartiennent à un seul cluster. Il est souvent utilisé pour les données de type arborescentes.
+    AgglomerativeClustering : cet algorithme commence par attribuer chaque point de données à son propre cluster, 
+    puis fusionne de manière récursive les paires de clusters les plus proches jusqu'à ce que tous les points appartiennent à un seul cluster. 
+    Il est souvent utilisé pour les données de type arborescentes.
 
-    DBSCAN : cet algorithme est un algorithme de clustering de densité qui divise les données en clusters de haute densité séparés par des zones de faible densité. Il est particulièrement utile pour les données avec des formes complexes et de tailles différentes.
+    DBSCAN : cet algorithme est un algorithme de clustering de densité qui divise les données en clusters de haute densité séparés par des zones de faible densité. 
+    Il est particulièrement utile pour les données avec des formes complexes et de tailles différentes.
 
-    Birch : cet algorithme utilise une structure hiérarchique en forme d'arbre pour diviser les données en clusters. Il est capable de gérer des ensembles de données volumineux et est souvent utilisé pour des tâches de clustering en temps réel.
+    Birch : cet algorithme utilise une structure hiérarchique en forme d'arbre pour diviser les données en clusters. 
+    Il est capable de gérer des ensembles de données volumineux et est souvent utilisé pour des tâches de clustering en temps réel.
 
-    MeanShift : cet algorithme est un algorithme de clustering non paramétrique qui se base sur la densité pour trouver les centres de cluster. Il est souvent utilisé pour des données de type image et pour des tâches de segmentation d'image.
+    MeanShift : cet algorithme est un algorithme de clustering non paramétrique qui se base sur la densité pour trouver les centres de cluster. 
+    Il est souvent utilisé pour des données de type image et pour des tâches de segmentation d'image.
 
-    SpectralClustering : cet algorithme utilise les propriétés spectrales de la matrice de similarité pour diviser les données en K clusters. Il est particulièrement utile pour les données non linéaires.
+    SpectralClustering : cet algorithme utilise les propriétés spectrales de la matrice de similarité pour diviser les données en K clusters. 
+    Il est particulièrement utile pour les données non linéaires.
 
-    OPTICS : cet algorithme est similaire à DBSCAN, mais il ne nécessite pas de spécifier à l'avance le nombre de clusters à créer. Il est souvent utilisé pour des données de type spatial.
+    OPTICS : cet algorithme est similaire à DBSCAN, mais il ne nécessite pas de spécifier à l'avance le nombre de clusters à créer. 
+    Il est souvent utilisé pour des données de type spatial.
     
 """
 
