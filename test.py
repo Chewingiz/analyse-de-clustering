@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
     
-def display_kmeans(kmeans_model, X):
+def display_kmeans(kmeans_model, X, ax):
     # Récupérer les labels et les centres des clusters
     labels = kmeans_model.labels_
     centers = kmeans_model.cluster_centers_
@@ -19,15 +19,19 @@ def display_kmeans(kmeans_model, X):
     # Assigner la couleur à chaque point
     point_colors = [color_map[labels[i]] for i in range(len(X))]
 
-    # Afficher les points et les centres de chaque cluster
-    plt.scatter(X[:, 0], X[:, 1], c=point_colors, s=50)
-    plt.scatter(centers[:, 0], centers[:, 1], marker='*', c='black', s=1000)
-    plt.show()
+    # Afficher les points
+    ax.scatter(X[:, 0], X[:, 1], c=point_colors, s=50)
+
+    # Vérifier que les centres ont été calculés et les afficher
+    if centers is not None:
+        ax.scatter(centers[:, 0], centers[:, 1], marker='*', c='black', s=1000)
+
+    return ax
     
 
-def display_agglomerative_clustering(model, X):
+def display_agglomerative(agglomerative_model, X, ax):
     # Récupérer les labels des clusters
-    labels = model.fit_predict(X)
+    labels = agglomerative_model.labels_
 
     # Générer les couleurs pour chaque cluster
     num_clusters = len(np.unique(labels))
@@ -37,9 +41,10 @@ def display_agglomerative_clustering(model, X):
     # Assigner la couleur à chaque point
     point_colors = [color_map[labels[i]] for i in range(len(X))]
 
-    # Afficher les points de chaque cluster
-    plt.scatter(X[:, 0], X[:, 1], c=point_colors, s=50)
-    plt.show()
+    # Afficher les points
+    ax.scatter(X[:, 0], X[:, 1], c=point_colors, s=50)
+
+    return ax
 
     
 def test_kmean(X, nb_cluster):
@@ -48,7 +53,7 @@ def test_kmean(X, nb_cluster):
     end = time.time()
     elapsed = end - start
     print(f'Temps d\'exécution kmean : {elapsed:.2}ms')
-    display_kmeans(kmeans, X)
+    #display_kmeans(kmeans, X)
     return kmeans
     
 def aglo(X, nb_cluster):
@@ -97,10 +102,41 @@ def DBSCAN_test(X):
 def main(title):
     data = pd.read_csv(title)
     X = data[['x', 'y']].values
-    #test_kmean(X, 3)
-    #aglo(X, 3)
-    MeanShift_test(X)
-    #DBSCAN_test(X)
+    kmeans_model_1 = test_kmean(X, 3)
+    agglomerative_model_1 = aglo(X, 3)
+    kmeans_model_2 = MeanShift_test(X)
+    agglomerative_model_2 = DBSCAN_test(X)
+
+   
+
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
+
+    # Afficher le premier tableau de clustering k-means
+    ax = axes[0, 0]
+    ax.set_title("K-Means (k=3)")
+    display_kmeans(kmeans_model_1, X, ax)
+
+    # Afficher le deuxième tableau de clustering k-means
+    ax = axes[0, 1]
+    ax.set_title("K-Means (k=4)")
+    display_kmeans(kmeans_model_2, X, ax)
+
+    # Afficher le troisième tableau de clustering agglomératif
+    ax = axes[1, 0]
+    ax.set_title("Agglomerative Clustering (n_clusters=2)")
+    display_agglomerative(agglomerative_model_1, X, ax)
+
+    # Afficher le quatrième tableau de clustering agglomératif
+    ax = axes[1, 1]
+    ax.set_title("Agglomerative Clustering (n_clusters=3)")
+    display_agglomerative(agglomerative_model_2, X, ax)
+
+    plt.tight_layout()
+
+    # Afficher la figure
+    plt.show()
+
+
     return 0
 
 
