@@ -10,7 +10,12 @@ from sklearn.metrics import silhouette_score, accuracy_score
 def display_kmeans(kmeans_model, X, ax):
     # Récupérer les labels et les centres des clusters
     labels = kmeans_model.labels_
-    centers = kmeans_model.cluster_centers_
+    
+
+    if hasattr(kmeans_model, "cluster_centers_"):
+        centers = kmeans_model.cluster_centers_
+    else:
+        centers = None
 
     # Générer les couleurs pour chaque cluster
     num_clusters = len(np.unique(labels))
@@ -120,13 +125,7 @@ def nb_cluster_optimal(X):
     plt.show()
 
     return optimal_n_clusters
-"""
-def nb_lettres(liste, nb):
-    if (nb > 24):
-        print("plus de 24 centres")
-        return liste
-    return 
-"""
+
 
 def main(title):
     data = pd.read_csv(title)
@@ -192,8 +191,8 @@ def main(title):
     # Afficher le premier tableau de clustering k-means
     ax = axes[0, 0]
     ax.set_title(f"K-Means (k = {nb_cluster})")
-    print(kmeans.predict(X))
-    print("Score =" + str(accuracy_score(kmeans.predict(X) ,liste_flottants)))
+    #print(kmeans.predict(X))
+    #print("Score =" + str(accuracy_score(kmeans.predict(X) ,liste_flottants)))
     display_kmeans(kmeans, X, ax)
     
 
@@ -201,22 +200,22 @@ def main(title):
     ax = axes[0, 1]
     ax.set_title("MeanShift (bandwidth = 35)")
     display_kmeans(MeanShift, X, ax)
-    print(MeanShift.predict(X))
-    print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
+    #print(MeanShift.predict(X))
+    #print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
     ax.set_title(f"Agglomerative Clustering (k = {nb_cluster})")
-    display_agglomerative(agglomerative, X, ax)
-    print(agglomerative.labels_)
-    print("Score =" + str(accuracy_score(agglomerative.labels_ ,liste_flottants)))
+    display_kmeans(agglomerative, X, ax)
+    #print(agglomerative.labels_)
+    #print("Score =" + str(accuracy_score(agglomerative.labels_ ,liste_flottants)))
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
     ax.set_title("DBSCAN  (eps = 20 et min_samples = 2)")
     display_agglomerative(DBSCAN, X, ax)
-    print(DBSCAN.fit_predict(X))
-    print("Score =" + str(accuracy_score(DBSCAN.fit_predict(X) ,liste_flottants)))
+    #print(DBSCAN.fit_predict(X))
+    #print("Score =" + str(accuracy_score(DBSCAN.fit_predict(X) ,liste_flottants)))
 
     plt.tight_layout()
 
