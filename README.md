@@ -5,17 +5,12 @@ Bienvenue dans ce programme Python d'analyse de clustering ! Ce programme est co
 
 Les bibliothèques nécessaires pour exécuter le code sont les suivantes :
 
-[sklearn](https://scikit-learn.org/stable/) pour les méthodes de clustering
-
-[pandas](https://pandas.pydata.org/) pour importer les données
-
-[numpy](https://numpy.org/) pour certaines manipulations de données
-
-[matplotlib](https://matplotlib.org/) pour afficher les graphiques
-
-[time](https://docs.python.org/fr/3/library/time.html) pour calculer le temps d'exécution
-
-[sklearn.metrics](https://scikit-learn.org/stable/modules/model_evaluation.html) pour calculer le nombre optimal de cluster, le coefficient de silhouette et la précision
+* [sklearn](https://scikit-learn.org/stable/) pour les méthodes de clustering
+* [pandas](https://pandas.pydata.org/) pour importer les données
+* [numpy](https://numpy.org/) pour certaines manipulations de données
+* [matplotlib](https://matplotlib.org/) pour afficher les graphiques
+* [time](https://docs.python.org/fr/3/library/time.html) pour calculer le temps d'exécution
+* [sklearn.metrics](https://scikit-learn.org/stable/modules/model_evaluation.html) pour calculer le nombre optimal de cluster, le coefficient de silhouette et la précision
     
 ## Méthodes de clustering 
 * [KMeans](https://fr.wikipedia.org/wiki/K-moyennes) : C'est l'une des méthodes de clustering les plus populaires. Elle consiste à diviser les données en k groupes distincts en minimisant la somme des distances entre chaque point et le centre de son cluster. C'est une méthode de clustering par partition, ce qui signifie que chaque point de données appartient à un seul cluster.
