@@ -7,13 +7,12 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score, accuracy_score
 
     
-def display_kmeans(kmeans_model, X, ax):
+def display_clusters(model, X, ax):
     # Récupérer les labels et les centres des clusters
-    labels = kmeans_model.labels_
+    labels = model.labels_
     
-
-    if hasattr(kmeans_model, "cluster_centers_"):
-        centers = kmeans_model.cluster_centers_
+    if hasattr(model, "cluster_centers_"): #vérifie si l'instance contient l'attribut "cluster_centers_"
+        centers = model.cluster_centers_
     else:
         centers = None
 
@@ -34,24 +33,6 @@ def display_kmeans(kmeans_model, X, ax):
 
     return ax
     
-
-def display_agglomerative(agglomerative_model, X, ax):
-    # Récupérer les labels des clusters
-    labels = agglomerative_model.labels_
-
-    # Générer les couleurs pour chaque cluster
-    num_clusters = len(np.unique(labels))
-    colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k']
-    color_map = {i: colors[i] for i in range(num_clusters)}
-
-    # Assigner la couleur à chaque point
-    point_colors = [color_map[labels[i]] for i in range(len(X))]
-
-    # Afficher les points
-    ax.scatter(X[:, 0], X[:, 1], c=point_colors, s=50)
-
-    return ax
-
     
 def test_kmean(X, nb_cluster):
     start = time.time()
@@ -59,7 +40,7 @@ def test_kmean(X, nb_cluster):
     end = time.time()
     elapsed = end - start
     print(f'Temps d\'exécution kmean : {elapsed:.2}ms')
-    #display_kmeans(kmeans, X)
+    #display_clusters(kmeans, X)
     return kmeans
     
 def agglo(X, nb_cluster):
@@ -89,7 +70,7 @@ def MeanShift_test(X, bw):
     elapsed = end - start
     print(f'Temps d\'exécution MeanShift : {elapsed:.2}ms')
     print(f'Temps d\'exécution MeanShift : {elapsed:.2f}s')
-    #display_kmeans(ms, X)
+    #display_clusters(ms, X)
     return ms
 	
 	
@@ -147,22 +128,22 @@ def main(title):
     # Afficher le premier tableau de clustering k-means
     ax = axes[0, 0]
     ax.set_title("DBSCAN (eps = 20 et min_samples = 2)")
-    display_agglomerative(DBSCAN_1, X, ax)
+    display_clusters(DBSCAN_1, X, ax)
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
     ax.set_title("DBSCAN (eps = 25 et min_samples = 2)")
-    display_agglomerative(DBSCAN_2, X, ax)
+    display_clusters(DBSCAN_2, X, ax)
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
     ax.set_title("DBSCAN (eps = 30 et min_samples = 2)")
-    display_agglomerative(DBSCAN_3, X, ax)
+    display_clusters(DBSCAN_3, X, ax)
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
     ax.set_title("DBSCAN (eps = 20 et min_samples = 3)")
-    display_agglomerative(DBSCAN_4, X, ax)
+    display_clusters(DBSCAN_4, X, ax)
 
     plt.tight_layout()
 
@@ -193,27 +174,27 @@ def main(title):
     ax.set_title(f"K-Means (k = {nb_cluster})")
     #print(kmeans.predict(X))
     #print("Score =" + str(accuracy_score(kmeans.predict(X) ,liste_flottants)))
-    display_kmeans(kmeans, X, ax)
+    display_clusters(kmeans, X, ax)
     
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
     ax.set_title("MeanShift (bandwidth = 35)")
-    display_kmeans(MeanShift, X, ax)
+    display_clusters(MeanShift, X, ax)
     #print(MeanShift.predict(X))
     #print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
     ax.set_title(f"Agglomerative Clustering (k = {nb_cluster})")
-    display_kmeans(agglomerative, X, ax)
+    display_clusters(agglomerative, X, ax)
     #print(agglomerative.labels_)
     #print("Score =" + str(accuracy_score(agglomerative.labels_ ,liste_flottants)))
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
     ax.set_title("DBSCAN  (eps = 20 et min_samples = 2)")
-    display_agglomerative(DBSCAN, X, ax)
+    display_clusters(DBSCAN, X, ax)
     #print(DBSCAN.fit_predict(X))
     #print("Score =" + str(accuracy_score(DBSCAN.fit_predict(X) ,liste_flottants)))
 
@@ -236,22 +217,22 @@ def main(title):
     # Afficher le premier tableau de clustering k-means
     ax = axes[0, 0]
     ax.set_title("MeanShift (bandwidth = 25)")
-    display_kmeans(MeanShift_1, X, ax)
+    display_clusters(MeanShift_1, X, ax)
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
     ax.set_title("MeanShift (bandwidth = 30)")
-    display_kmeans(MeanShift_2, X, ax)
+    display_clusters(MeanShift_2, X, ax)
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
     ax.set_title("MeanShift (bandwidth = 35)")
-    display_kmeans(MeanShift_3, X, ax)
+    display_clusters(MeanShift_3, X, ax)
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
     ax.set_title("MeanShift (bandwidth = 40)")
-    display_kmeans(MeanShift_4, X, ax)
+    display_clusters(MeanShift_4, X, ax)
 
     plt.tight_layout()
 
@@ -306,7 +287,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
     
-def display_kmeans(kmeans_model, X):
+def display_clusters(kmeans_model, X):
     # Récupérer les labels et les centres des clusters
     labels = kmeans_model.labels_
     centers = kmeans_model.cluster_centers_
@@ -328,7 +309,7 @@ def display_kmeans(kmeans_model, X):
 def test_kmean(data, nb_cluster):
     kmeans = KMeans(n_clusters=nb_cluster, random_state=0, n_init="auto").fit(data)
   	
-    display_kmeans(kmeans, data)
+    display_clusters(kmeans, data)
     return 0
     
 
