@@ -181,8 +181,8 @@ def main(title):
     ax = axes[0, 1]
     ax.set_title("MeanShift (bandwidth = 35)")
     display_clusters(MeanShift, X, ax)
-    #print(MeanShift.predict(X))
-    #print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
+    print(MeanShift.predict(X))
+    print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
@@ -252,77 +252,3 @@ if __name__ == "__main__":
         exit(1)
     main(sys.argv[1])
 
-"""
-
-    KMeans : cet algorithme divise les données en K clusters en minimisant la somme des distances au carré entre chaque point de données et le centroïde de son cluster. 
-    C'est l'un des algorithmes de clustering les plus couramment utilisés.
-
-    AgglomerativeClustering : cet algorithme commence par attribuer chaque point de données à son propre cluster, 
-    puis fusionne de manière récursive les paires de clusters les plus proches jusqu'à ce que tous les points appartiennent à un seul cluster. 
-    Il est souvent utilisé pour les données de type arborescentes.
-
-    DBSCAN : cet algorithme est un algorithme de clustering de densité qui divise les données en clusters de haute densité séparés par des zones de faible densité. 
-    Il est particulièrement utile pour les données avec des formes complexes et de tailles différentes.
-
-    Birch : cet algorithme utilise une structure hiérarchique en forme d'arbre pour diviser les données en clusters. 
-    Il est capable de gérer des ensembles de données volumineux et est souvent utilisé pour des tâches de clustering en temps réel.
-
-    MeanShift : cet algorithme est un algorithme de clustering non paramétrique qui se base sur la densité pour trouver les centres de cluster. 
-    Il est souvent utilisé pour des données de type image et pour des tâches de segmentation d'image.
-
-    SpectralClustering : cet algorithme utilise les propriétés spectrales de la matrice de similarité pour diviser les données en K clusters. 
-    Il est particulièrement utile pour les données non linéaires.
-
-    OPTICS : cet algorithme est similaire à DBSCAN, mais il ne nécessite pas de spécifier à l'avance le nombre de clusters à créer. 
-    Il est souvent utilisé pour des données de type spatial.
-    
-"""
-
-
-"""from sklearn.cluster import KMeans
-import pandas as pd
-import sys
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-    
-def display_clusters(kmeans_model, X):
-    # Récupérer les labels et les centres des clusters
-    labels = kmeans_model.labels_
-    centers = kmeans_model.cluster_centers_
-
-    # Générer les couleurs pour chaque cluster
-    num_clusters = len(np.unique(labels))
-    colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k']
-    color_map = {i: colors[i] for i in range(num_clusters)}
-
-    # Assigner la couleur à chaque point
-    point_colors = [color_map[labels[i]] for i in range(len(X))]
-
-    # Afficher les points et les centres de chaque cluster
-    plt.scatter(X[:, 0], X[:, 1], c=point_colors, s=50)
-    plt.scatter(centers[:, 0], centers[:, 1], marker='*', c='black', s=1000)
-    plt.show()
-    
-    
-def test_kmean(data, nb_cluster):
-    kmeans = KMeans(n_clusters=nb_cluster, random_state=0, n_init="auto").fit(data)
-  	
-    display_clusters(kmeans, data)
-    return 0
-    
-
-    
-def main( title ):
-    data = pd.read_csv(title)
-    test_kmean(data, 3)
-    return 0
-	#comment afficher les clusters trouver avec sklearn.cluster avec  des couleurs differente ?
-if __name__ == "__main__":
-    try:
-        print(sys.argv[1])
-    except:
-        print(f"Warning no file specified.")
-        exit(1)
-    main(sys.argv[1])"""
