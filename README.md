@@ -5,21 +5,18 @@ Bienvenue dans ce programme Python d'analyse de clustering ! Ce programme est co
 
 Les bibliothèques nécessaires pour exécuter le code sont les suivantes :
 
-    [sklearn](https://scikit-learn.org/stable/) pour les méthodes de clustering
-    [pandas](https://pandas.pydata.org/) pour importer les données
-    [numpy](https://numpy.org/) pour certaines manipulations de données
-    [matplotlib](https://matplotlib.org/) pour afficher les graphiques
-    [time](https://docs.python.org/fr/3/library/time.html) pour calculer le temps d'exécution
-    [sklearn.metrics](https://scikit-learn.org/stable/modules/model_evaluation.html) pour calculer le nombre optimal de cluster, le coefficient de silhouette et la précision
+[sklearn](https://scikit-learn.org/stable/) pour les méthodes de clustering
+[pandas](https://pandas.pydata.org/) pour importer les données
+[numpy](https://numpy.org/) pour certaines manipulations de données
+[matplotlib](https://matplotlib.org/) pour afficher les graphiques
+[time](https://docs.python.org/fr/3/library/time.html) pour calculer le temps d'exécution
+[sklearn.metrics](https://scikit-learn.org/stable/modules/model_evaluation.html) pour calculer le nombre optimal de cluster, le coefficient de silhouette et la précision
     
 ## Méthodes de clustering 
-    *[KMeans](https://fr.wikipedia.org/wiki/K-moyennes) : C'est l'une des méthodes de clustering les plus populaires. Elle consiste à diviser les données en k groupes distincts en minimisant la somme des distances entre chaque point et le centre de son cluster. C'est une méthode de clustering par partition, ce qui signifie que chaque point de données appartient à un seul cluster.
-
-    *[Agglomerative Clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering) : Il s'agit d'une méthode de clustering hiérarchique qui commence avec chaque point de données comme son propre cluster, puis fusionne les clusters les plus similaires jusqu'à ce qu'il n'en reste qu'un. C'est une méthode de clustering par hiérarchie, ce qui signifie que les points peuvent appartenir à plusieurs clusters à différents niveaux de l'arbre.
-
-    *[MeanShift](https://en.wikipedia.org/wiki/Mean_shift) : Cette méthode de clustering utilise une approche de densité pour trouver les centres de cluster. Elle commence par sélectionner un point aléatoire comme centre de cluster, puis calcule la densité de points autour de ce centre. Les points sont ensuite déplacés vers des zones de densité plus élevée, jusqu'à ce qu'ils atteignent un maximum local de densité. Cela se répète jusqu'à ce que tous les points se trouvent dans une zone de densité maximale. C'est une méthode de clustering par densité, ce qui signifie que les points peuvent appartenir à différents clusters en fonction de leur densité de voisinage.
-
-    *[DBSCAN](https://fr.wikipedia.org/wiki/DBSCAN) : Cette méthode de clustering utilise également une approche de densité pour trouver les clusters, mais elle est plus robuste que MeanShift. DBSCAN divise les données en trois types : les points centraux, les points limites et les points de bruit. Les points centraux ont un nombre minimum de voisins dans un rayon spécifié, les points limites ont moins de voisins que le minimum, mais appartiennent à un cluster avec des points centraux, tandis que les points de bruit n'ont pas suffisamment de voisins pour appartenir à un cluster. C'est une méthode de clustering par densité, qui est efficace pour les ensembles de données avec des clusters de forme arbitraire et de taille variable.
+*[KMeans](https://fr.wikipedia.org/wiki/K-moyennes) : C'est l'une des méthodes de clustering les plus populaires. Elle consiste à diviser les données en k groupes distincts en minimisant la somme des distances entre chaque point et le centre de son cluster. C'est une méthode de clustering par partition, ce qui signifie que chaque point de données appartient à un seul cluster.
+*[Agglomerative Clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering) : Il s'agit d'une méthode de clustering hiérarchique qui commence avec chaque point de données comme son propre cluster, puis fusionne les clusters les plus similaires jusqu'à ce qu'il n'en reste qu'un. C'est une méthode de clustering par hiérarchie, ce qui signifie que les points peuvent appartenir à plusieurs clusters à différents niveaux de l'arbre.
+*[MeanShift](https://en.wikipedia.org/wiki/Mean_shift) : Cette méthode de clustering utilise une approche de densité pour trouver les centres de cluster. Elle commence par sélectionner un point aléatoire comme centre de cluster, puis calcule la densité de points autour de ce centre. Les points sont ensuite déplacés vers des zones de densité plus élevée, jusqu'à ce qu'ils atteignent un maximum local de densité. Cela se répète jusqu'à ce que tous les points se trouvent dans une zone de densité maximale. C'est une méthode de clustering par densité, ce qui signifie que les points peuvent appartenir à différents clusters en fonction de leur densité de voisinage.
+*[DBSCAN](https://fr.wikipedia.org/wiki/DBSCAN) : Cette méthode de clustering utilise également une approche de densité pour trouver les clusters, mais elle est plus robuste que MeanShift. DBSCAN divise les données en trois types : les points centraux, les points limites et les points de bruit. Les points centraux ont un nombre minimum de voisins dans un rayon spécifié, les points limites ont moins de voisins que le minimum, mais appartiennent à un cluster avec des points centraux, tandis que les points de bruit n'ont pas suffisamment de voisins pour appartenir à un cluster. C'est une méthode de clustering par densité, qui est efficace pour les ensembles de données avec des clusters de forme arbitraire et de taille variable.
 
 
 
