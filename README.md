@@ -6,10 +6,15 @@ Bienvenue dans ce programme Python d'analyse de clustering ! Ce programme est co
 Les bibliothèques nécessaires pour exécuter le code sont les suivantes :
 
 [sklearn](https://scikit-learn.org/stable/) pour les méthodes de clustering
+
 [pandas](https://pandas.pydata.org/) pour importer les données
+
 [numpy](https://numpy.org/) pour certaines manipulations de données
+
 [matplotlib](https://matplotlib.org/) pour afficher les graphiques
+
 [time](https://docs.python.org/fr/3/library/time.html) pour calculer le temps d'exécution
+
 [sklearn.metrics](https://scikit-learn.org/stable/modules/model_evaluation.html) pour calculer le nombre optimal de cluster, le coefficient de silhouette et la précision
     
 ## Méthodes de clustering 
