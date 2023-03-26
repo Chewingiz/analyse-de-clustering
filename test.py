@@ -4,7 +4,7 @@ import sys
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import silhouette_score
+from sklearn.metrics import silhouette_score, accuracy_score
 
     
 def display_kmeans(kmeans_model, X, ax):
@@ -25,7 +25,7 @@ def display_kmeans(kmeans_model, X, ax):
 
     # Vérifier que les centres ont été calculés et les afficher
     if centers is not None:
-        ax.scatter(centers[:, 0], centers[:, 1], marker='*', c='black', s=1000)
+        ax.scatter(centers[:, 0], centers[:, 1], marker='*', c='black', s=100)
 
     return ax
     
@@ -66,7 +66,7 @@ def agglo(X, nb_cluster):
     model.fit(X)
     end = time.time()
     elapsed = end - start
-    print(f'Temps d\'exécution aglo : {elapsed:.2}ms')   
+    print(f'Temps d\'exécution agglo : {elapsed:.2}ms')   
     #display_agglomerative_clustering(model, X)
     return model
     
@@ -120,10 +120,22 @@ def nb_cluster_optimal(X):
     plt.show()
 
     return optimal_n_clusters
+"""
+def nb_lettres(liste, nb):
+    if (nb > 24):
+        print("plus de 24 centres")
+        return liste
+    return 
+"""
 
 def main(title):
     data = pd.read_csv(title)
     X = data[['x', 'y']].values
+    Color = data[['color']].values
+    Color = [5 if x == 2 else x for x in Color]
+    Color = [2 if x == 0 else x for x in Color]
+    Color = [0 if x == 5 else x for x in Color]
+    liste_flottants = list(map(float, Color))
     nb_cluster = nb_cluster_optimal(X)
 
     DBSCAN_1 = DBSCAN_test(X, 20, 2)#10,15 créé erreur affichage
@@ -165,29 +177,46 @@ def main(title):
     MeanShift = MeanShift_test(X, 35)
     DBSCAN = DBSCAN_test(X, 20, 2)
 
-   
+    silouette_kmeans = silhouette_score(X, kmeans.fit_predict(X))
+    silouette_agglomerative = silhouette_score(X, agglomerative.labels_)
+    silouette_MeanShift = silhouette_score(X, MeanShift.fit_predict(X))
+    silouette_DBSCAN = silhouette_score(X, DBSCAN.fit_predict(X))
+
+    print("silouette = " + str(silouette_kmeans) )
+    print("silouette = " + str(silouette_agglomerative))
+    print("silouette = " + str(silouette_MeanShift) )
+    print("silouette = " + str(silouette_DBSCAN) )
 
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
     fig.canvas.manager.set_window_title("Comparaisons des méthodes de clusterisation")
     # Afficher le premier tableau de clustering k-means
     ax = axes[0, 0]
     ax.set_title(f"K-Means (k = {nb_cluster})")
+    print(kmeans.predict(X))
+    print("Score =" + str(accuracy_score(kmeans.predict(X) ,liste_flottants)))
     display_kmeans(kmeans, X, ax)
+    
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
     ax.set_title("MeanShift (bandwidth = 35)")
     display_kmeans(MeanShift, X, ax)
+    print(MeanShift.predict(X))
+    print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
     ax.set_title(f"Agglomerative Clustering (k = {nb_cluster})")
     display_agglomerative(agglomerative, X, ax)
+    print(agglomerative.labels_)
+    print("Score =" + str(accuracy_score(agglomerative.labels_ ,liste_flottants)))
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
     ax.set_title("DBSCAN  (eps = 20 et min_samples = 2)")
     display_agglomerative(DBSCAN, X, ax)
+    print(DBSCAN.fit_predict(X))
+    print("Score =" + str(accuracy_score(DBSCAN.fit_predict(X) ,liste_flottants)))
 
     plt.tight_layout()
 
