@@ -22,12 +22,12 @@ Les bibliothèques nécessaires pour exécuter le code sont les suivantes :
 
 ## Fonctions
 
-*display_clusters(model, X, ax): cette fonction permet d'afficher les clusters sur un graphique en 2D. Elle prend en paramètres le modèle de clustering, les données et le graphique sur lequel afficher les résultats.
-*test_kmean(X, nb_cluster): cette fonction effectue le clustering des données avec la méthode KMeans. Elle prend en paramètres les données et le nombre de clusters souhaité.
-agglo(X, nb_cluster): cette fonction effectue le clustering des données avec la méthode AgglomerativeClustering. Elle prend en paramètres les données et le nombre de clusters souhaité.
-*MeanShift_test(X, bw): cette fonction effectue le clustering des données avec la méthode MeanShift. Elle prend en paramètres les données et la bande passante.
-DBSCAN_test(X, eps, ms): cette fonction effectue le clustering des données avec la méthode DBSCAN. Elle prend en paramètres les données, la valeur de epsilon et le nombre minimum de points.
-*nb_cluster_optimal(X): cette fonction permet de déterminer le nombre optimal de clusters avec la méthode KMeans en calculant le coefficient de silhouette. Elle prend en paramètre les données.
+* display_clusters(model, X, ax): cette fonction permet d'afficher les clusters sur un graphique en 2D. Elle prend en paramètres le modèle de clustering, les données et le graphique sur lequel afficher les résultats.
+* test_kmean(X, nb_cluster): cette fonction effectue le clustering des données avec la méthode KMeans. Elle prend en paramètres les données et le nombre de clusters souhaité.
+* agglo(X, nb_cluster): cette fonction effectue le clustering des données avec la méthode AgglomerativeClustering. Elle prend en paramètres les données et le nombre de clusters souhaité.
+* MeanShift_test(X, bw): cette fonction effectue le clustering des données avec la méthode MeanShift. Elle prend en paramètres les données et la bande passante.
+* DBSCAN_test(X, eps, ms): cette fonction effectue le clustering des données avec la méthode DBSCAN. Elle prend en paramètres les données, la valeur de epsilon et le nombre minimum de points.
+* nb_cluster_optimal(X): cette fonction permet de déterminer le nombre optimal de clusters avec la méthode KMeans en calculant le coefficient de silhouette. Elle prend en paramètre les données.
 
 ## Exécution du code
 
@@ -51,6 +51,6 @@ La fonction main() appelle les différentes fonctions pour effectuer les cluster
 
 Attention! Il faut parfois attendre un moment car MeanShift est plutôt lent sur de petites bases de données.
 
-## liens Base de données
-* [basic5.csv]{base de donnée : https://www.kaggle.com/datasets/joonasyoon/clustering-exercises?select=basic5.csv}
-* [blob.csv]{https://www.kaggle.com/datasets/joonasyoon/clustering-exercises?resource=download&select=blob.csv}
+## Liens Base de données
+* [basic5.csv](https://www.kaggle.com/datasets/joonasyoon/clustering-exercises?select=basic5.csv)
+* [blob.csv](https://www.kaggle.com/datasets/joonasyoon/clustering-exercises?resource=download&select=blob.csv)
