@@ -35,12 +35,22 @@ Le code importe des données à partir d'un fichier CSV. Pour exécuter le code,
 
 ```
 python3 test.py <fichier.csv>
-```
 
+```
+ou
+```
+python3 test.py <fichier.csv> bw eps ms
+
+```
+* bw  = bandwidth
+* eps = eps
+* ms  = min_samples
+
+Les variables ont des valeurs par défaut qui correspond aux valeurs adaptées pour la base de données basiques5.csv qui vaut respectivement 35, 20 et 2.
 La fonction main() appelle les différentes fonctions pour effectuer les clusterings et afficher les graphiques un par un.
 
 Attention! Il faut parfois attendre un moment car MeanShift est plutôt lent sur de petites bases de données.
 
-
-
-
+## liens Base de données
+* [basic5.csv]{base de donnée : https://www.kaggle.com/datasets/joonasyoon/clustering-exercises?select=basic5.csv}
+* [blob.csv]{https://www.kaggle.com/datasets/joonasyoon/clustering-exercises?resource=download&select=blob.csv}
