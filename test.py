@@ -18,9 +18,10 @@ def display_clusters(model, X, ax):
 
     # Générer les couleurs pour chaque cluster
     num_clusters = len(np.unique(labels))
-    colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k']
-    color_map = {i: colors[i] for i in range(num_clusters)}
-
+    # Générer une liste de couleurs assez grande pour n'importe quel schéma
+    #colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k'] #ici uniquement 7
+    colors_generation = plt.cm.get_cmap('tab10', num_clusters)
+    colors = colors_generation.colors.tolist()
     # Assigner la couleur à chaque point
     point_colors = [color_map[labels[i]] for i in range(len(X))]
 
