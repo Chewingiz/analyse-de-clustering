@@ -22,8 +22,17 @@ def display_clusters(model, X, ax):
     #colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k'] #ici uniquement 7
     colors_generation = plt.cm.get_cmap('tab10', num_clusters)
     colors = colors_generation.colors.tolist()
-    # Assigner la couleur à chaque point
-    point_colors = [color_map[labels[i]] for i in range(len(X))]
+        # Assigner la couleur à chaque point
+    #point_colors = [color_map[labels[i]] for i in range(len(X))]
+    point_colors = []
+    for i in range(len(X)):
+        v = labels[i]
+        if v == -1 : 
+            # permet d'afficher les points non affecter à des clusters en noir
+            point_colors.append("black")
+        else :
+            point_colors.append(color_map[v])
+
 
     # Afficher les points
     ax.scatter(X[:, 0], X[:, 1], c=point_colors, s=50)
