@@ -22,7 +22,10 @@ def display_clusters(model, X, ax):
     #colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k'] #ici uniquement 7
     colors_generation = plt.cm.get_cmap('tab10', num_clusters)
     colors = colors_generation.colors.tolist()
-        # Assigner la couleur à chaque point
+
+    color_map = {i: colors[i] for i in range(num_clusters)}
+    
+    # Assigner la couleur à chaque point
     #point_colors = [color_map[labels[i]] for i in range(len(X))]
     point_colors = []
     for i in range(len(X)):
@@ -32,7 +35,6 @@ def display_clusters(model, X, ax):
             point_colors.append("black")
         else :
             point_colors.append(color_map[v])
-
 
     # Afficher les points
     ax.scatter(X[:, 0], X[:, 1], c=point_colors, s=50)
@@ -118,7 +120,7 @@ def nb_cluster_optimal(X):
     return optimal_n_clusters
 
 
-def main(title):
+def main(title, bw = 35 , eps = 20, ms = 2):
     data = pd.read_csv(title)
     X = data[['x', 'y']].values
     Color = data[['color']].values
@@ -128,31 +130,31 @@ def main(title):
     liste_flottants = list(map(float, Color))
     nb_cluster = nb_cluster_optimal(X)
 
-    DBSCAN_1 = DBSCAN_test(X, 20, 2)#10,15 créé erreur affichage
-    DBSCAN_2 = DBSCAN_test(X, 25, 2)
-    DBSCAN_3 = DBSCAN_test(X, 30, 2)
-    DBSCAN_4 = DBSCAN_test(X, 20, 3)
+    DBSCAN_1 = DBSCAN_test(X, eps, ms)#10,15 créé erreur affichage
+    DBSCAN_2 = DBSCAN_test(X, eps+5, ms)
+    DBSCAN_3 = DBSCAN_test(X, eps+10, ms)
+    DBSCAN_4 = DBSCAN_test(X, eps, ms+1)
 
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
     fig.canvas.manager.set_window_title("Comparaisons des résultats de DBSCAN en fonction de la valeur de l'eps")
     # Afficher le premier tableau de clustering k-means
     ax = axes[0, 0]
-    ax.set_title("DBSCAN (eps = 20 et min_samples = 2)")
+    ax.set_title(f"DBSCAN (eps = {eps} et min_samples = {ms})")
     display_clusters(DBSCAN_1, X, ax)
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
-    ax.set_title("DBSCAN (eps = 25 et min_samples = 2)")
+    ax.set_title(f"DBSCAN (eps = {eps+5} et min_samples = {ms})")
     display_clusters(DBSCAN_2, X, ax)
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
-    ax.set_title("DBSCAN (eps = 30 et min_samples = 2)")
+    ax.set_title(f"DBSCAN (eps = {eps+10} et min_samples = {ms})")
     display_clusters(DBSCAN_3, X, ax)
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
-    ax.set_title("DBSCAN (eps = 20 et min_samples = 3)")
+    ax.set_title(f"DBSCAN (eps = {eps} et min_samples = {ms+1})")
     display_clusters(DBSCAN_4, X, ax)
 
     plt.tight_layout()
@@ -164,8 +166,8 @@ def main(title):
 
     kmeans = test_kmean(X, nb_cluster)
     agglomerative = agglo(X, nb_cluster)
-    MeanShift = MeanShift_test(X, 35)
-    DBSCAN = DBSCAN_test(X, 20, 2)
+    MeanShift = MeanShift_test(X, bw)
+    DBSCAN = DBSCAN_test(X, eps, ms)
 
     silouette_kmeans = silhouette_score(X, kmeans.fit_predict(X))
     silouette_agglomerative = silhouette_score(X, agglomerative.labels_)
@@ -189,7 +191,7 @@ def main(title):
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
-    ax.set_title("MeanShift (bandwidth = 35)")
+    ax.set_title(f"MeanShift (bandwidth = {bw})")
     display_clusters(MeanShift, X, ax)
     print(MeanShift.predict(X))
     print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
@@ -203,7 +205,7 @@ def main(title):
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
-    ax.set_title("DBSCAN  (eps = 20 et min_samples = 2)")
+    ax.set_title(f"DBSCAN  (eps = {eps} et min_samples = {ms})")
     display_clusters(DBSCAN, X, ax)
     #print(DBSCAN.fit_predict(X))
     #print("Score =" + str(accuracy_score(DBSCAN.fit_predict(X) ,liste_flottants)))
@@ -216,32 +218,32 @@ def main(title):
 
 
 
-    MeanShift_1 = MeanShift_test(X, 25)
-    MeanShift_2 = MeanShift_test(X, 30)
-    MeanShift_3 = MeanShift_test(X, 35)
-    MeanShift_4 = MeanShift_test(X, 40)
+    MeanShift_1 = MeanShift_test(X, bw-10)
+    MeanShift_2 = MeanShift_test(X, bw-5)
+    MeanShift_3 = MeanShift_test(X, bw)
+    MeanShift_4 = MeanShift_test(X, bw+5)
    
 
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
     fig.canvas.manager.set_window_title("Comparaisons des résultats de MeanShift en fonction de la valeur de bandwidth")
     # Afficher le premier tableau de clustering k-means
     ax = axes[0, 0]
-    ax.set_title("MeanShift (bandwidth = 25)")
+    ax.set_title(f"MeanShift (bandwidth = {bw-10})")
     display_clusters(MeanShift_1, X, ax)
 
     # Afficher le deuxième tableau de clustering k-means
     ax = axes[0, 1]
-    ax.set_title("MeanShift (bandwidth = 30)")
+    ax.set_title(f"MeanShift (bandwidth = {bw-5})")
     display_clusters(MeanShift_2, X, ax)
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
-    ax.set_title("MeanShift (bandwidth = 35)")
+    ax.set_title(f"MeanShift (bandwidth = {bw})")
     display_clusters(MeanShift_3, X, ax)
 
     # Afficher le quatrième tableau de clustering agglomératif
     ax = axes[1, 1]
-    ax.set_title("MeanShift (bandwidth = 40)")
+    ax.set_title(f"MeanShift (bandwidth = {bw+5})")
     display_clusters(MeanShift_4, X, ax)
 
     plt.tight_layout()
@@ -260,5 +262,10 @@ if __name__ == "__main__":
     except:
         print(f"Warning no file specified.")
         exit(1)
-    main(sys.argv[1])
 
+    if (len(sys.argv) == 5):
+        print(sys.argv)
+        main(sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), int(sys.argv[4]))
+    else :
+        print(sys.argv)
+        main(sys.argv[1])
