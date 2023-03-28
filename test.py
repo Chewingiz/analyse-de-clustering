@@ -123,11 +123,15 @@ def nb_cluster_optimal(X):
 def main(title, bw = 35 , eps = 20, ms = 2):
     data = pd.read_csv(title)
     X = data[['x', 'y']].values
+
+    # Changement de valeurs colors pour matcher les valeurs donnée par le programme
+    # Son 2 correspond au 0 et son 0 au 2 pour kmean par exemple
     Color = data[['color']].values
     Color = [5 if x == 2 else x for x in Color]
     Color = [2 if x == 0 else x for x in Color]
     Color = [0 if x == 5 else x for x in Color]
     liste_flottants = list(map(float, Color))
+
     nb_cluster = nb_cluster_optimal(X)
 
     DBSCAN_1 = DBSCAN_test(X, eps, ms)#10,15 créé erreur affichage
