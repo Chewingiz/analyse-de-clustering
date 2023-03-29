@@ -4,6 +4,7 @@ import sys
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from sklearn.metrics import silhouette_score, accuracy_score
 
     
@@ -20,9 +21,10 @@ def display_clusters(model, X, ax):
     num_clusters = len(np.unique(labels))
     # Générer une liste de couleurs assez grande pour n'importe quel schéma
     #colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k'] #ici uniquement 7
-    colors_generation = plt.cm.get_cmap('tab10', num_clusters)
-    colors = colors_generation.colors.tolist()
-
+    """   colors_generation = plt.cm.get_cmap('tab10', num_clusters)
+    colors = colors_generation.colors.tolist()"""
+    colors_generation = mpl.colormaps.get_cmap('tab10')  # , num_clusters
+    colors = list(colors_generation.colors)
     color_map = {i: colors[i] for i in range(num_clusters)}
     
     # Assigner la couleur à chaque point
@@ -134,37 +136,6 @@ def main(title, bw = 35 , eps = 20, ms = 2):
 
     nb_cluster = nb_cluster_optimal(X)
 
-    DBSCAN_1 = DBSCAN_test(X, eps, ms)#10,15 créé erreur affichage
-    DBSCAN_2 = DBSCAN_test(X, eps+5, ms)
-    DBSCAN_3 = DBSCAN_test(X, eps+10, ms)
-    DBSCAN_4 = DBSCAN_test(X, eps, ms+1)
-
-    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
-    fig.canvas.manager.set_window_title("Comparaisons des résultats de DBSCAN en fonction de la valeur de l'eps")
-    # Afficher le premier tableau de clustering k-means
-    ax = axes[0, 0]
-    ax.set_title(f"DBSCAN (eps = {eps} et min_samples = {ms})")
-    display_clusters(DBSCAN_1, X, ax)
-
-    # Afficher le deuxième tableau de clustering k-means
-    ax = axes[0, 1]
-    ax.set_title(f"DBSCAN (eps = {eps+5} et min_samples = {ms})")
-    display_clusters(DBSCAN_2, X, ax)
-
-    # Afficher le troisième tableau de clustering agglomératif
-    ax = axes[1, 0]
-    ax.set_title(f"DBSCAN (eps = {eps+10} et min_samples = {ms})")
-    display_clusters(DBSCAN_3, X, ax)
-
-    # Afficher le quatrième tableau de clustering agglomératif
-    ax = axes[1, 1]
-    ax.set_title(f"DBSCAN (eps = {eps} et min_samples = {ms+1})")
-    display_clusters(DBSCAN_4, X, ax)
-
-    plt.tight_layout()
-
-    # Afficher la figure
-    plt.show()
     
 
 
@@ -173,7 +144,7 @@ def main(title, bw = 35 , eps = 20, ms = 2):
     MeanShift = MeanShift_test(X, bw)
     DBSCAN = DBSCAN_test(X, eps, ms)
 
-    silouette_kmeans = silhouette_score(X, kmeans.fit_predict(X))
+    """ silouette_kmeans = silhouette_score(X, kmeans.fit_predict(X))
     silouette_agglomerative = silhouette_score(X, agglomerative.labels_)
     silouette_MeanShift = silhouette_score(X, MeanShift.fit_predict(X))
     silouette_DBSCAN = silhouette_score(X, DBSCAN.fit_predict(X))
@@ -182,7 +153,7 @@ def main(title, bw = 35 , eps = 20, ms = 2):
     print("silouette = " + str(silouette_agglomerative))
     print("silouette = " + str(silouette_MeanShift) )
     print("silouette = " + str(silouette_DBSCAN) )
-
+    """
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
     fig.canvas.manager.set_window_title("Comparaisons des méthodes de clusterisation")
     # Afficher le premier tableau de clustering k-means
@@ -220,7 +191,38 @@ def main(title, bw = 35 , eps = 20, ms = 2):
     plt.show()
    
 
+    DBSCAN_1 = DBSCAN_test(X, eps, ms)#10,15 créé erreur affichage
+    DBSCAN_2 = DBSCAN_test(X, eps+5, ms)
+    DBSCAN_3 = DBSCAN_test(X, eps+10, ms)
+    DBSCAN_4 = DBSCAN_test(X, eps, ms+1)
 
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
+    fig.canvas.manager.set_window_title("Comparaisons des résultats de DBSCAN en fonction de la valeur de l'eps")
+    # Afficher le premier tableau de clustering k-means
+    ax = axes[0, 0]
+    ax.set_title(f"DBSCAN (eps = {eps} et min_samples = {ms})")
+    display_clusters(DBSCAN_1, X, ax)
+
+    # Afficher le deuxième tableau de clustering k-means
+    ax = axes[0, 1]
+    ax.set_title(f"DBSCAN (eps = {eps+5} et min_samples = {ms})")
+    display_clusters(DBSCAN_2, X, ax)
+
+    # Afficher le troisième tableau de clustering agglomératif
+    ax = axes[1, 0]
+    ax.set_title(f"DBSCAN (eps = {eps+10} et min_samples = {ms})")
+    display_clusters(DBSCAN_3, X, ax)
+
+    # Afficher le quatrième tableau de clustering agglomératif
+    ax = axes[1, 1]
+    ax.set_title(f"DBSCAN (eps = {eps} et min_samples = {ms+1})")
+    display_clusters(DBSCAN_4, X, ax)
+
+    plt.tight_layout()
+
+    # Afficher la figure
+    plt.show()
+    
 
     MeanShift_1 = MeanShift_test(X, bw-10)
     MeanShift_2 = MeanShift_test(X, bw-5)
