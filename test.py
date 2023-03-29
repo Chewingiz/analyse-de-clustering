@@ -137,8 +137,9 @@ def main(title, bw = 35 , eps = 20, ms = 2):
     nb_cluster = nb_cluster_optimal(X)
 
     
-
-
+    
+    print("\nComparaisons des méthodes de clusterisation :")
+    print("...Attendez...")
     kmeans = test_kmean(X, nb_cluster)
     agglomerative = agglo(X, nb_cluster)
     MeanShift = MeanShift_test(X, bw)
@@ -168,8 +169,8 @@ def main(title, bw = 35 , eps = 20, ms = 2):
     ax = axes[0, 1]
     ax.set_title(f"MeanShift (bandwidth = {bw})")
     display_clusters(MeanShift, X, ax)
-    print(MeanShift.predict(X))
-    print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
+    #print(MeanShift.predict(X))
+    #print("Score =" + str(accuracy_score(MeanShift.predict(X) ,liste_flottants)))
 
     # Afficher le troisième tableau de clustering agglomératif
     ax = axes[1, 0]
@@ -189,8 +190,9 @@ def main(title, bw = 35 , eps = 20, ms = 2):
 
     # Afficher la figure
     plt.show()
-   
-
+    
+    print("\nComparaisons des résultats de DBSCAN en fonction de la valeur de l'eps :")
+    print("...Attendez...")
     DBSCAN_1 = DBSCAN_test(X, eps, ms)#10,15 créé erreur affichage
     DBSCAN_2 = DBSCAN_test(X, eps+5, ms)
     DBSCAN_3 = DBSCAN_test(X, eps+10, ms)
@@ -223,7 +225,8 @@ def main(title, bw = 35 , eps = 20, ms = 2):
     # Afficher la figure
     plt.show()
     
-
+    print("\nComparaisons des résultats de MeanShift en fonction de la valeur de bandwidth :")
+    print("...Attendez...")
     MeanShift_1 = MeanShift_test(X, bw-10)
     MeanShift_2 = MeanShift_test(X, bw-5)
     MeanShift_3 = MeanShift_test(X, bw)
@@ -270,8 +273,6 @@ if __name__ == "__main__":
         exit(1)
 
     if (len(sys.argv) == 5):
-        print(sys.argv)
         main(sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), int(sys.argv[4]))
-    else :
-        print(sys.argv)
+    else :  
         main(sys.argv[1])
