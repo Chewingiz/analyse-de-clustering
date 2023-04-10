@@ -1,5 +1,5 @@
 # analyse-de-clustering
-Bienvenue dans ce programme Python d'analyse de clustering ! Ce programme est conçu pour vous permettre de comparer quatre méthodes de clustering populaires en Python : KMeans, AgglomerativeClustering, MeanShift et DBSCAN. Il offre des informations sur le temps d'exécution et teste la qualité des groupes obtenus grâce à la méthode de silouette. Pour une meilleure visualisation des résultats, le programme affiche également des graphiques clairs et intuitifs.
+Bienvenue dans ce programme Python d'analyse de clustering ! Ce programme est conçu pour vous permettre de comparer quatre méthodes de clustering populaires : KMeans, AgglomerativeClustering, MeanShift et DBSCAN. Il offre des informations sur le temps d'exécution et teste la qualité des groupes obtenus grâce à la méthode de silouette. Pour une meilleure visualisation des résultats, le programme affiche également des graphiques clairs.
 
 ## Bibliothèques nécessaires
 
