@@ -5,7 +5,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from sklearn.metrics import silhouette_score, accuracy_score
+from sklearn.metrics import silhouette_score, accuracy_score, calinski_harabasz_score
 
     
 def display_clusters(model, X, ax):
@@ -106,7 +106,8 @@ def nb_cluster_optimal(X):
 
     return optimal_n_clusters
 
-
+def qualite_clusters_silhouette():
+	silhouette_score(X, labels)
 def main(title, bw = 35 , eps = 20, ms = 2):
     data = pd.read_csv(title)
     X = data[['x', 'y']].values
@@ -141,6 +142,19 @@ def main(title, bw = 35 , eps = 20, ms = 2):
     plt.tight_layout()
     plt.show()
     
+    print("Qualité des clusters:")
+    print("Silhouette :")
+    print("Kmeans :"        + str(silhouette_score(X, kmeans.fit_predict(X)          )))
+    print("agglomerative :" + str(silhouette_score(X, agglomerative.fit_predict(X)   )))
+    print("MeanShift :"     + str(silhouette_score(X, MeanShift.fit_predict(X)       )))
+    #print("DBSCAN : "       + str(silhouette_score(X, DBSCAN.fit_predict(X)          )))
+
+    print("Calinski Harabasz :")
+    print("Kmeans :"        + str(calinski_harabasz_score(X, kmeans.fit_predict(X)          )))
+    print("agglomerative :" + str(calinski_harabasz_score(X, agglomerative.fit_predict(X)   )))
+    print("MeanShift :"     + str(calinski_harabasz_score(X, MeanShift.fit_predict(X)       )))
+   # print("DBSCAN : "       + str(calinski_harabasz_score(X, DBSCAN.fit_predict(X)          )))
+
     print("\nComparaisons des résultats de DBSCAN en fonction de la valeur de l'eps :")
     print("...Attendez...")
     DBSCAN_1 = DBSCAN_test(X, eps, ms)
